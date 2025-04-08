@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Breast Cancer Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background-color: #f7f9fa;
+        }
+        label {
+            font-weight: bold;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            padding: 8px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            top: 120%;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 13px;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .benign {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .malignant {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Breast Cancer Tumor Prediction</h2>
+    <form action="/predict" method="post">
+
+        <label>Tumor Radius (mean):
+            <span class="tooltip">ℹ️
+                <span class="tooltiptext">Size of tumor from center to edge. Range: 6 – 30</span>
+            </span>
+        </label><br>
+        <input type="number" step="0.01" name="radius_mean" min="6" max="30" required><br><br>
+
+        <label>Texture Variation (mean):
+            <span class="tooltip">ℹ️
+                <span class="tooltiptext">Variation in cell textures. Range: 9 – 40</span>
+            </span>
+        </label><br>
+        <input type="number" step="0.01" name="texture_mean" min="9" max="40" required><br><br>
+
+        <label>Tumor Perimeter (mean):
+            <span class="tooltip">ℹ️
+                <span class="tooltiptext">Outer edge length of tumor. Range: 40 – 190</span>
+            </span>
+        </label><br>
+        <input type="number" step="0.01" name="perimeter_mean" min="40" max="190" required><br><br>
+
+        <label>Tumor Area (mean):
+            <span class="tooltip">ℹ️
+                <span class="tooltiptext">Approximate area of the tumor. Range: 140 – 2500</span>
+            </span>
+        </label><br>
+        <input type="number" step="0.1" name="area_mean" min="140" max="2500" required><br><br>
+
+        <label>Surface Smoothness (mean):
+            <span class="tooltip">ℹ️
+                <span class="tooltiptext">Smoothness of cell borders. Range: 0.05 – 0.2</span>
+            </span>
+        </label><br>
+        <input type="number" step="0.001" name="smoothness_mean" min="0.05" max="0.2" required><br><br>
+
+        <label>Tumor Compactness (mean):
+            <span class="tooltip">ℹ️
+                <span class="tooltiptext">How compact the cells are. Range: 0.02 – 0.4</span>
+            </span>
+        </label><br>
+        <input type="number" step="0.001" name="compactness_mean" min="0.02" max="0.4" required><br><br>
+
+        <label>Tumor Concavity (mean):
+            <span class="tooltip">ℹ️
+                <span class="tooltiptext">Severity of concave portions of the tumor. Range: 0.0 – 0.4</span>
+            </span>
+        </label><br>
+        <input type="number" step="0.001" name="concavity_mean" min="0.0" max="0.4" required><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction_text %}
+        <div class="result {% if 'Malignant' in prediction_text %}malignant{% else %}benign{% endif %}">
+            {{ prediction_text }}
+        </div>
+    {% endif %}
+
+</body>
+</html>
